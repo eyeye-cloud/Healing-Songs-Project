@@ -1,0 +1,155 @@
+/* ------------------------------
+   전체 페이지 공통 스타일
+------------------------------ */
+
+/* 페이지 전체 배경색 & 폰트 설정 */
+body {
+    font-family: "Noto Sans", sans-serif; /* 깔끔한 Google 폰트 */
+    background-color: #ffffff; /* 부드러운 밝은 회색 배경 */
+    margin: 0;
+    padding: 0;
+}
+
+/* 콘텐츠 전체를 감싸는 컨테이너 */
+.container {
+    width: 80%;               /* 전체 폭의 80% 사용 → 양 옆에 여백 생김 */
+    max-width: 1000px;         /* 화면이 너무 넓어져도 가독성 좋게 제한 */
+    margin: 0 auto;        /* 위아래 40px, 좌우 auto → 중앙 정렬 */
+    padding: 0;     /* 🔹 위/아래 패딩 제거 */
+}
+
+html, body {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;   /* 자연스럽게 스크롤됨 */
+    height: 100%;
+}
+
+/* ------------------------------
+   각 힐링송 섹션 스타일
+------------------------------ */
+
+.song-section {
+    scroll-snap-align: start;
+    min-height: 100vh;   /* 화면 꽉 채움 */
+    display: flex;
+    flex-direction: row-reverse;      /* 이미지 + 텍스트가 가로로 배치됨 */
+    align-items: center; /* 화면 세로 중앙 배치 */
+    gap: 70px;                /* 이미지와 텍스트 사이 공간 */
+    flex-wrap: nowrap;    /* 텍스트+이미지가 한 줄에 유지 */
+}
+
+/* 화면에 등장할 때 적용될 클래스 */
+.song-section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 이미지와 관련된 부분 */
+.thumbnail-wrapper {
+    flex-shrink: 0;           /* 이미지 크기 줄어들지 않게 */
+}
+
+/* 앨범 썸네일 이미지 */
+.song-thumbnail {
+    width: 330px;
+    height: 330px;
+    border-radius: 50%;       /* 원형 이미지 만들기 */
+    object-fit: cover;        /* 이미지를 비율 유지하며 꽉 채우기 */
+    object-position: center top;
+    cursor: pointer;
+    transform: rotate(0deg);             /* 초기 상태 */
+    transition: transform 0.5s ease-out;     /* 🔹 멈출 때 부드럽게 돌아오도록 */
+}
+
+/* 재생 중일 때만 회전 */
+.song-thumbnail.playing {
+    animation: rotateAlbum 30s linear infinite;
+}
+
+@keyframes rotateAlbum {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 텍스트 영역 */
+.song-content {
+    text-align: left;  /* 텍스트 왼쪽 정렬 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 상단에서 시작 */
+    align-items: flex-start;
+    width: 500px;        /* 원하는 너비로 조정 */
+    gap: 20px; /* 제목↔소개↔생각 적는 칸 간격 모두 동일하게 확대 */
+    flex-shrink: 0; /* 크기 줄어들지 않게 */
+}
+
+/* 노래 제목 스타일 */
+.song-content h2 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333; /* 보기 좋은 진한 회색 */
+}
+
+/* 노래 소개 문구 */
+.description {
+    margin: 0;
+    line-height: 1.5;
+    color: #555; /* 중간 톤의 회색 */
+}
+
+/* 사용자가 직접 채워 넣을 공간 */
+.my-thoughts {
+    font-style: italic; /* "아 여기 적는 곳이구나" 느낌 */
+    color: #777;
+}
+
+/* 영상 버튼 */
+.video-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #eaeaea;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+.video-btn:hover {
+    background-color: #d8d8d8;
+}
+
+.video-container {
+    display: none !important;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.song-video {
+    width: 100%;
+    height: 450px;
+    border: none;
+}
+
+/* ------------------------------
+   Footer (사용자 정보 영역)
+------------------------------ */
+
+.footer {
+    text-align: center;          /* 텍스트 가운데 정렬 */
+    margin-top: 60px;
+    padding: 20px 0;
+    color: #555;                 /* 부드러운 회색 */
+    font-size: 15px;
+    border-top: 1px solid #ddd;  /* 위쪽에 경계선 */
+}
+
+/* footer 내부 텍스트 */
+.footer p {
+    margin: 5px 0;
+    display: flex;
+    gap: 30px; /* 이름과 이메일 사이 간격 */
+}

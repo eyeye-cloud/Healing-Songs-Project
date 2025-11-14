@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Someone's Healing Songs</title>
+
+    <!-- Google Font 예시: Noto Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- 외부 CSS 연결 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+<!-- 전체 컨테이너 -->
+<main class="container">
+
+    <!-- 곡 1 섹션 -->
+    <section class="song-section">
+        <div class="thumbnail-wrapper">
+
+             <!-- 앨범 이미지 -->
+            <img src="every_day_good_day.jpg" 
+                 alt="every day good day"
+                 class="song-thumbnail">
+        </div>
+
+        <div class="song-content">
+            <h2>SOLE │ every day good day (Feat. BIG Naughty)</h2>
+
+            <!-- 곡 소개 문구 -->
+            <p class="description">
+                # 노래에만 몰두하게 되는<br>
+            </p>
+
+            <!-- 사용자가 입력할 공간 -->
+            <p class="my-thoughts">
+                # 노래에만 몰두하게 되는&nbsp;&nbsp;&nbsp;# refreshing
+            </p>
+
+            <!-- 영상 재생 버튼 -->
+            <button class="video-btn" onclick="toggleVideo(this, '_ngjXGKNa4s')">음악 재생 / 멈춤</button>
+        </div>    
+        
+
+    <div class="video-container">
+        <iframe class="song-video" 
+                src="" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+    </section>
+
+    <!-- 곡 2 섹션 -->
+    <section class="song-section">
+        <div class="thumbnail-wrapper">
+            <img src="날씨의_요정.jpg" 
+                 alt="날씨의 요정 앨범 이미지" 
+                 class="song-thumbnail">
+        </div>
+
+        <div class="song-content">
+            <h2>신인류 │ 날씨의 요정</h2>
+
+            <!-- 곡 소개 문구 -->
+            <p class="description">
+                # 지친 나에게 주는 포근한 위로 
+            </p>
+
+            <!-- 사용자가 입력할 공간 -->
+            <p class="my-thoughts"># 지친 나에게 주는 포근한 위로</p>
+
+            <!-- 영상 재생 버튼 -->
+            <button class="video-btn" onclick="toggleVideo(this, 'gNXFtFVz8NI')">음악 재생 / 멈춤</button>
+        </div>    
+
+        
+        <div class="video-container">
+            <iframe class="song-video" 
+                    src="" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </section>
+
+    <!-- footer 섹션 -->
+    <footer class="footer">
+        <p>
+            <span class="name">김예인</span>
+            <span class="email">yein5510@hanyang.ac.kr</span>
+        </p>
+    </footer>
+</main>
+
+<!-- Intersection Observer: 스크롤 등장 효과 -->
+<script>
+    const sections = document.querySelectorAll('.song-section');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, { threshold: 0.3 });
+    sections.forEach(section => observer.observe(section));
+</script>
+
+<!-- 클릭 시 영상 표시 + 자동 재생 -->
+<script>
+function showVideo(button, videoId) {
+    const section = button.closest('.song-section');
+    const container = section.querySelector('.video-container');
+    const iframe = container.querySelector('iframe');
+
+    // src가 비어있거나 이미 다르게 설정되어 있으면 새로 넣음
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+    // container 보이게
+    container.style.display = "block";
+
+    // container 기준으로 스크롤
+    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function toggleVideo(button, videoId) {
+    const section = button.closest('.song-section');
+    const container = section.querySelector('.video-container');
+    const iframe = container.querySelector('iframe');
+    const thumbnail = section.querySelector('.song-thumbnail');
+
+    if (container.style.display === "block") {
+        // 영상 멈춤
+        iframe.src = "";
+        container.style.display = "none";
+
+        // 🔹 앨범 회전 멈춤 및 부드럽게 원위치
+
+        // 1. 현재 애니메이션의 최종 위치를 브라우저에게 "기억"하게 합니다.
+        const currentRotation = window.getComputedStyle(thumbnail).transform;
+        
+        // 2. 애니메이션을 중지하고 (playing 클래스 제거), 현재 위치를 transform 값으로 설정합니다.
+        //    transition이 작동할 수 있도록 애니메이션을 제거합니다.
+        thumbnail.classList.remove("playing");
+
+        // 3. 현재 회전 각도를 덮어써서 갑자기 0도로 돌아가는 것을 방지합니다.
+        thumbnail.style.transform = currentRotation; 
+
+        // 4. 아주 짧은 딜레이 후, transform을 0도로 설정하여 CSS transition(1s ease-out)이 작동하게 합니다.
+        setTimeout(() => {
+            // 이 시점에서 transition이 발동하며 앨범이 1초 동안 부드럽게 돌아갑니다.
+            thumbnail.style.transform = "rotate(0deg)"; 
+        }, 10); // 10ms 딜레이
+
+        
+    } else {
+        // 재생 시작
+        thumbnail.style.transform = "rotate(0deg)"; // 혹시 남아있을 transform 초기화 (없어도 무방)
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        container.style.display = "block";
+
+        // 영상이 나오도록 스크롤
+        container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // 🔹 회전 시작
+        thumbnail.classList.add("playing");
+    }
+}
+</script>
+</body>
+</html> 
